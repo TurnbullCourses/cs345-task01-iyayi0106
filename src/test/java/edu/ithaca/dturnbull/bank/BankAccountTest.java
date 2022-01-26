@@ -3,10 +3,13 @@ package edu.ithaca.dturnbull.bank;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.DisplayName;
+
 
 class BankAccountTest {
 
     @Test
+    @DisplayName("Get correct balance")
     void getBalanceTest() {
         BankAccount bankAccount = new BankAccount("a@b.com", 200);
 
@@ -26,6 +29,22 @@ class BankAccountTest {
     void isEmailValidTest(){
         assertTrue(BankAccount.isEmailValid( "a@b.com"));
         assertFalse( BankAccount.isEmailValid(""));
+        
+        assertTrue(BankAccount.isEmailValid("a@b-c.com"));
+        assertTrue(BankAccount.isEmailValid("a1@b.com"));
+        assertTrue(BankAccount.isEmailValid("a.1@b.com"));
+        assertFalse(BankAccount.isEmailValid("1@b.com"));
+        assertFalse(BankAccount.isEmailValid("a..b@c.com"));
+        assertFalse(BankAccount.isEmailValid(".a@b.com"));
+        assertFalse(BankAccount.isEmailValid("a#@b.com"));
+        assertFalse(BankAccount.isEmailValid("a@b..com"));
+        assertFalse(BankAccount.isEmailValid("a@b"));
+        assertFalse(BankAccount.isEmailValid("a#@b.com"));
+        assertFalse(BankAccount.isEmailValid("a@b#.com"));
+
+
+
+
     }
 
     @Test
