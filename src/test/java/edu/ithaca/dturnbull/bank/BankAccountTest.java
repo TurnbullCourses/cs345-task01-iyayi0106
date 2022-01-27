@@ -28,8 +28,7 @@ class BankAccountTest {
         bankAccount.withdraw(100); // if amount == balance
         assertEquals(0, bankAccount.getBalance(), 0.001);
 
-        bankAccount.withdraw(100); // if amount > balance
-        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300));
+        assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300)); // if amount > balance
     }
 
     @Test
