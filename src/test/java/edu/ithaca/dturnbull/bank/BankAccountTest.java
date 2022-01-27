@@ -11,9 +11,17 @@ class BankAccountTest {
     @Test
     @DisplayName("Get correct balance")
     void getBalanceTest() {
-        BankAccount bankAccount = new BankAccount("a@b.com", 200);
-
+        BankAccount bankAccount = new BankAccount("a@b.com", 200); // if balance > 0
         assertEquals(200, bankAccount.getBalance(), 0.001);
+
+        BankAccount bankAccount1 = new BankAccount("a@b.com", 0); //if balance == 0
+        assertEquals(200, bankAccount1.getBalance(), 0.001);
+
+        BankAccount bankAccount2 = new BankAccount("a@b.com", -200); // if balance < 0
+        assertEquals(200, bankAccount2.getBalance(), 0.001);
+
+        
+
     }
 
     @Test
