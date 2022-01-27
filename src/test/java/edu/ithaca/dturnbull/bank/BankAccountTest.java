@@ -27,20 +27,23 @@ class BankAccountTest {
 
     @Test
     void isEmailValidTest(){
-        assertTrue(BankAccount.isEmailValid( "a@b.com"));
-        assertFalse( BankAccount.isEmailValid(""));
+        assertTrue(BankAccount.isEmailValid( "a@b.com")); //equivalence class - no punctuation in prefix
+        assertFalse( BankAccount.isEmailValid("")); //equivalence class - no email given
         
-        assertTrue(BankAccount.isEmailValid("a@b-c.com"));
-        assertTrue(BankAccount.isEmailValid("a1@b.com"));
-        assertTrue(BankAccount.isEmailValid("a.1@b.com"));
-        assertFalse(BankAccount.isEmailValid("1@b.com"));
-        assertFalse(BankAccount.isEmailValid("a..b@c.com"));
-        assertFalse(BankAccount.isEmailValid(".a@b.com"));
-        assertFalse(BankAccount.isEmailValid("a#@b.com"));
-        assertFalse(BankAccount.isEmailValid("a@b..com"));
-        assertFalse(BankAccount.isEmailValid("a@b"));
-        assertFalse(BankAccount.isEmailValid("a#@b.com"));
-        assertFalse(BankAccount.isEmailValid("a@b#.com"));
+        assertTrue(BankAccount.isEmailValid("a@b-c.com")); //equivalence class - dash in domain
+        assertTrue(BankAccount.isEmailValid("a1@b.com")); //equivalence class - number in prefix
+        assertTrue(BankAccount.isEmailValid("a.1@b.com")); //equivalence class - period in prefix, and number in prefix
+        assertFalse(BankAccount.isEmailValid("1@b.com")); //equivalence class - only number in prefix
+        assertFalse(BankAccount.isEmailValid("a..b@c.com")); //equivalence class - double period in prefix
+        assertFalse(BankAccount.isEmailValid(".a@b.com")); //boundary case - period in prefix but in front
+        assertFalse(BankAccount.isEmailValid("a#@b.com")); //equivalence class - invalid character in prefix
+        assertFalse(BankAccount.isEmailValid("a@b..com")); //equivalence class - double period in domain
+        assertFalse(BankAccount.isEmailValid("a@b")); //equivalence class - ending shorter than two characters
+        assertFalse(BankAccount.isEmailValid("a#@b.com")); //duplicate test
+        assertFalse(BankAccount.isEmailValid("a@b#.com")); //equivalence class - invalid character in domain
+
+        //other possible tests - boundary case where end of domain is exactly two characters, equivalence class where an _ is used
+
 
 
 
