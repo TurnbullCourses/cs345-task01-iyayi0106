@@ -50,15 +50,20 @@ class BankAccountTest {
         assertFalse(BankAccount.isEmailValid("a#@b.com")); //equivalence class - invalid character in prefix
         assertFalse(BankAccount.isEmailValid("a@b..com")); //equivalence class - double period in domain
         assertFalse(BankAccount.isEmailValid("a@b")); //equivalence class - ending shorter than two characters
-        assertFalse(BankAccount.isEmailValid("a#@b.com")); //duplicate test
+        assertTrue(BankAccount.isEmailValid("a@b.co")); //boundary case - ending domain w/ exactly 2 chars
         assertFalse(BankAccount.isEmailValid("a@b#.com")); //equivalence class - invalid character in domain
 
-        //other possible tests - boundary case where end of domain is exactly two characters, equivalence class where an _ is used
+        //equivalence class where an _ is used
 
+    }
 
-
-
-
+    @Test
+    void isAmountValidTest(){
+        assertTrue(BankAccount.isAmountValid(100.12)); // if amount has two digits after decimal
+        assertTrue(BankAccount.isAmountValid(100)); // if amount has no digits after decimal
+        assertFalse(BankAccount.isAmountValid(100.123)); // if amount had greater than two digits after decimal
+        assertThrows(IllegalArgumentException.class, () -> BankAccount.isAmountValid(-100.12)); // if amount < 0
+        assertTrue(BankAccount.isAmountValid(0.00)); // if amount == 0.00
     }
 
     @Test
