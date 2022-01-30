@@ -43,6 +43,14 @@ public class BankAccount {
         }
     }
 
+    /**
+     * @param amount
+     * @return true if the amount < 0 and has two decimal points or less, and false otherwise
+     */
+    public static boolean isAmountValid(double amount){
+        return false;
+    }
+
 
     public static boolean isEmailValid(String email){
         if (email.indexOf('@') == -1){ //needs an @ symbol to be valid
