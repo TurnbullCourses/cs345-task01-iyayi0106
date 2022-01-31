@@ -47,8 +47,20 @@ public class BankAccount {
      * @param amount
      * @return true if the amount < 0 and has two decimal points or less, and false otherwise
      */
-    public static boolean isAmountValid(double amount){
-        return false;
+    public static boolean isAmountValid(Double amount){
+        if (amount < 0.00){
+            return false;
+        }
+        
+        String[] amountSplit = amount.toString().split("\\."); // change type double to string and split into arrays
+        int afterDecimal = amountSplit[1].length();
+
+        if (afterDecimal > 2){
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
 

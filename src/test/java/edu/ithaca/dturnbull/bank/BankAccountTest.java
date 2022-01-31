@@ -60,9 +60,9 @@ class BankAccountTest {
     @Test
     void isAmountValidTest(){
         assertTrue(BankAccount.isAmountValid(100.12)); // if amount has two digits after decimal
-        assertTrue(BankAccount.isAmountValid(100)); // if amount has no digits after decimal
+        assertTrue(BankAccount.isAmountValid(100.0)); // if amount has one digit after decimal
         assertFalse(BankAccount.isAmountValid(100.123)); // if amount had greater than two digits after decimal
-        assertThrows(IllegalArgumentException.class, () -> BankAccount.isAmountValid(-100.12)); // if amount < 0
+        assertFalse(BankAccount.isAmountValid(-100.12)); // if amount < 0
         assertTrue(BankAccount.isAmountValid(0.00)); // if amount == 0.00
     }
 
