@@ -30,9 +30,32 @@ public class BankAccount {
     }
 
     /**
+     * @post deposits amount into balance of account
+     * @param amount
+     * @param account
+     * @throws IllegalArgumentException if amount is not valid
+     */
+    public void deposit(double amount, BankAccount account) throws IllegalArgumentException{
+        //if (!isAmountValid(amount)){}
+
+    }
+
+    /**
+     * @post transfers amount from account1 to account2
+     * @param amount
+     * @param account
+     * @throws IllegalArgumentException if amount is not valid
+     * @throws InsufficientFundsException if balance < amount
+     */
+    public void transfer(double amount, BankAccount account1, BankAccount account2) throws IllegalArgumentException, InsufficientFundsException{
+
+    }
+
+    /**
      * @post reduces the balance by amount if amount is non-negative and smaller than balance
-     * throw InsufficientFundsException if balance is negative
-     * throw IllegalArgumetException is amount is negative
+     * @param amount
+     * @throws InsufficientFundsException if balance < amount
+     * @throws IllegalArgumetException if amount is not valid
      */
     public void withdraw (double amount) throws InsufficientFundsException, IllegalArgumentException{
         if (!isAmountValid(amount)){
@@ -66,7 +89,10 @@ public class BankAccount {
         }
     }
 
-
+    /**
+     * @param email
+     * @return true if all characters of prefix and domain follow email requirements, otherwise false
+     */
     public static boolean isEmailValid(String email){
         if (email.indexOf('@') == -1){ //needs an @ symbol to be valid
             return false;
