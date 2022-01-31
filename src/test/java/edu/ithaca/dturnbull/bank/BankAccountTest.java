@@ -34,6 +34,9 @@ class BankAccountTest {
         assertEquals(0, bankAccount.getBalance(), 0.001);
 
         assertThrows(InsufficientFundsException.class, () -> bankAccount.withdraw(300)); // if amount > balance
+    
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(123.456)); // positive amount with too many digits after decimal
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(-123.45)); // amount < 0
     }
 
     @Test
@@ -73,7 +76,10 @@ class BankAccountTest {
         assertEquals("a@b.com", bankAccount.getEmail());
         assertEquals(200, bankAccount.getBalance(), 0.001);
         //check for exception thrown correctly
-        assertThrows(IllegalArgumentException.class, ()-> new BankAccount("", 100));
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("", 100));
+
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", 123.456)); // positive amount with too many digits after decimal
+        assertThrows(IllegalArgumentException.class, () -> new BankAccount("a@b.com", -123.45)); // amount < 0
     }
 
 }

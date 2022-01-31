@@ -53,7 +53,7 @@ public class BankAccount {
         }
         
         String[] amountSplit = amount.toString().split("\\."); // change type double to string and split into arrays
-        int afterDecimal = amountSplit[1].length();
+        int afterDecimal = amountSplit[1].length(); // number of digits after decimals
 
         if (afterDecimal > 2){
             return false;
