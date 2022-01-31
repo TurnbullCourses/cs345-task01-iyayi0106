@@ -32,23 +32,28 @@ public class BankAccount {
     /**
      * @post deposits amount into balance of account
      * @param amount
-     * @param account
      * @throws IllegalArgumentException if amount is not valid
      */
-    public void deposit(double amount, BankAccount account) throws IllegalArgumentException{
-        //if (!isAmountValid(amount)){}
-
+    public void deposit(double amount) throws IllegalArgumentException{
+        if (!isAmountValid(amount)){
+            throw new IllegalArgumentException("Invalid deposit amount: " + amount);
+        }
+        else{
+            balance += amount;
+        }
     }
 
     /**
      * @post transfers amount from account1 to account2
      * @param amount
-     * @param account
+     * @param account1 
+     * @param account2
      * @throws IllegalArgumentException if amount is not valid
      * @throws InsufficientFundsException if balance < amount
      */
     public void transfer(double amount, BankAccount account1, BankAccount account2) throws IllegalArgumentException, InsufficientFundsException{
-
+        account1.withdraw(amount);
+        account2.deposit(amount);
     }
 
     /**
