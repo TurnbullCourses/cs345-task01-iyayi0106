@@ -46,14 +46,17 @@ public class BankAccount {
     /**
      * @post transfers amount from account1 to account2
      * @param amount
-     * @param account1 
-     * @param account2
+     * @param account1
      * @throws IllegalArgumentException if amount is not valid
      * @throws InsufficientFundsException if balance < amount
      */
-    public void transfer(double amount, BankAccount account1, BankAccount account2) throws IllegalArgumentException, InsufficientFundsException{
-        account1.withdraw(amount);
-        account2.deposit(amount);
+    public void transfer(double amount, BankAccount accountTo) throws IllegalArgumentException, InsufficientFundsException{
+        if (isAmountValid(amount)==false){
+            throw new IllegalArgumentException("Invalid transfer amount: " + amount);
+        }
+
+        this.withdraw(amount);
+        accountTo.deposit(amount);
     }
 
     /**
