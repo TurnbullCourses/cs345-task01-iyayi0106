@@ -50,7 +50,7 @@ public class BankAccount {
      * @throws IllegalArgumentException if amount is not valid
      * @throws InsufficientFundsException if balance < amount
      */
-    public void transfer(double amount, BankAccount accountTo) throws IllegalArgumentException, InsufficientFundsException{
+    public void transfer(BankAccount accountTo, double amount) throws IllegalArgumentException, InsufficientFundsException{
         if (isAmountValid(amount)==false){
             throw new IllegalArgumentException("Invalid transfer amount: " + amount);
         }
@@ -82,7 +82,7 @@ public class BankAccount {
      * @return true if the amount < 0 and has two decimal points or less, and false otherwise
      */
     public static boolean isAmountValid(Double amount){
-        if (amount < 0.00){
+        if (amount <= 0){
             return false;
         }
         

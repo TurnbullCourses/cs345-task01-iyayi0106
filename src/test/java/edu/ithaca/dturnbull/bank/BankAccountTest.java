@@ -37,6 +37,33 @@ class BankAccountTest {
     }
 
     @Test
+    void depositTest(){
+        BankAccount bankAccount = new BankAccount("a@b.com", 123);
+        
+        bankAccount.deposit(100); // amount > 0
+        assertEquals(223, bankAccount.getBalance(), 0.001); // amount > 0
+        
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(0)); // amount == 0
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(-123)); // amount < 0
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(12.345)); // amount has more than two digits after decimal
+    }
+
+    @Test
+    void transferTest() throws IllegalArgumentException, InsufficientFundsException{
+        BankAccount accountFrom = new BankAccount("from@b.com",250);
+        BankAccount accountTo = new BankAccount("to@b.com", 200);
+
+        accountFrom.transfer(accountTo, 25.50); // amount > 0
+        assertEquals(224.50, accountFrom.getBalance(), 0.001);
+        assertEquals(225.50, accountTo.getBalance(), 0.001);
+
+        assertThrows(IllegalArgumentException.class, () -> accountFrom.transfer(accountTo, 0)); // amount == 0
+        assertThrows(IllegalArgumentException.class, () -> accountFrom.transfer(accountTo, -12)); // amount < 0
+        assertThrows(IllegalArgumentException.class, () -> accountFrom.transfer(accountTo, 12.345)); // amount with too many digits after decimal
+        assertThrows(InsufficientFundsException.class, () -> accountFrom.withdraw(250)); // amount > balance
+    }
+
+    @Test
     void isEmailValidTest(){
         assertTrue(BankAccount.isEmailValid( "a@b.com")); //equivalence class - no punctuation in prefix
         assertFalse( BankAccount.isEmailValid("")); //equivalence class - no email given
