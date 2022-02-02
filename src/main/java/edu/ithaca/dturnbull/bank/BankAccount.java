@@ -6,7 +6,10 @@ public class BankAccount {
     private double balance;
 
     /**
-     * @throws IllegalArgumentException if email is invalid
+     * @post initializes BankAccount object
+     * @param email
+     * @param startingBalance
+     * @throws IllegalArgumentException if email or starting balance is invalid
      */
     public BankAccount(String email, double startingBalance) throws IllegalArgumentException{
         if (!isAmountValid(startingBalance)){
@@ -45,13 +48,13 @@ public class BankAccount {
 
     /**
      * @post transfers amount from account1 to account2
+     * @param accountTo
      * @param amount
-     * @param account1
      * @throws IllegalArgumentException if amount is not valid
      * @throws InsufficientFundsException if balance < amount
      */
     public void transfer(BankAccount accountTo, double amount) throws IllegalArgumentException, InsufficientFundsException{
-        if (isAmountValid(amount)==false){
+        if (!isAmountValid(amount)){
             throw new IllegalArgumentException("Invalid transfer amount: " + amount);
         }
 
@@ -87,7 +90,7 @@ public class BankAccount {
         }
         
         String[] amountSplit = amount.toString().split("\\."); // change type double to string and split into arrays
-        int afterDecimal = amountSplit[1].length(); // number of digits after decimals
+        int afterDecimal = amountSplit[1].length(); // number of digits after decimal
 
         if (afterDecimal > 2){
             return false;
@@ -154,3 +157,73 @@ public class BankAccount {
         }
     }
 }
+
+/*
+if (email.indexOf('@') == -1){
+    return false;
+}
+
+else {
+    String validChars = "abcdefghijklmnopqrstuvwxyz1234567890"; // all valid chars
+    String specialChars = "_-.";
+
+    String[] splitEmail = email.split("@"); // separate prefix and domain into diff arrays
+    String prefix = splitEmail[0];
+    String domain = splitEmail[1];
+    prefix = prefix.toLowerCase(); // normalizing prefix
+    domain = domain.toLowerCase(); // normalizing domain
+
+    // first char of prefix must be in alphabet
+    if (!validChars.substring(0, 26).contains(String.valueOf(prefix.charAt(0)))){
+        return false;
+    }
+
+    // last char of prefix must be in validChars
+    if (!validChars.contains(String.valueOf(prefix.charAt(prefix.length()-1)))){
+        return false;
+    }
+    
+    for (int i = 1; i < prefix.length(); i++){
+        String tempChar = String.valueOf(prefix.charAt(i));
+        
+        // is rest of prefix valid
+        if (!validChars.contains(tempChar) && !specialChars.contains(tempChar)){ 
+            return false;
+        }
+        else if (tempChar.equals(".") || tempChar.equals("_") || tempChar.equals("-")){
+            
+            // no consecutive symbols
+            if (!validChars.contains(String.valueOf(prefix.charAt(i+1)))){ 
+                return false;
+            }
+        }
+    }
+    // does domain have '.'
+    if (domain.indexOf('.') == -1){ 
+        return false;
+    }
+    else{
+        String[] domainSplit = domain.split("\\."); // split domain into before and after '.'
+        String domain1 = domainSplit[0];
+        String domain2 = domainSplit[1];
+        // make sure the end has 2 or more characters
+        if (domain2.length() < 2){ 
+            return false;
+        }
+        // validation of domain's first part
+        for (int i = 0; i < domain1.length(); i++){
+            String tempChar = String.valueOf(domain1.charAt(i));
+            if (!validChars.contains(tempChar) && !tempChar.equals("-")){
+                return false;
+            }
+        }
+        // validation of domain's second part
+        for (int i = 0; i < domain2.length(); i++){
+            String tempChar = String.valueOf(domain2.charAt(i));
+            if (!validChars.contains(tempChar) && !tempChar.equals("-")){
+                return false;
+            }
+        }
+    }
+    return true;
+    */
