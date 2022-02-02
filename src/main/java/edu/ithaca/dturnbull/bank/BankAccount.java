@@ -6,7 +6,10 @@ public class BankAccount {
     private double balance;
 
     /**
-     * @post initializes BankAccount object
+     * the constructor should not rely on isAmountValid
+     * 0 as the starting balance should be a valid input
+     * but, 0 as an amount for withdraw, deposit, or trasfer should be an invalid input
+     * @post initializes BankAccount object with an email and starting balance
      * @param email
      * @param startingBalance
      * @throws IllegalArgumentException if email or starting balance is invalid
@@ -18,10 +21,9 @@ public class BankAccount {
         else if (!isEmailValid(email)){
             throw new IllegalArgumentException("Email address: " + email + " is invalid, cannot create account");
         }
-        else {
-            this.email = email;
-            this.balance = startingBalance;
-        }
+    
+        this.email = email;
+        this.balance = startingBalance;
     }
 
     public double getBalance(){
@@ -84,12 +86,12 @@ public class BankAccount {
      * @param amount
      * @return true if the amount < 0 and has two decimal points or less, and false otherwise
      */
-    public static boolean isAmountValid(Double amount){
-        if (amount <= 0){
+    public static boolean isAmountValid(double amount){
+        if (amount < 0){
             return false;
         }
         
-        String[] amountSplit = amount.toString().split("\\."); // change type double to string and split into arrays
+        String[] amountSplit = Double.toString(amount).split("\\."); // change type double to string and split into arrays
         int afterDecimal = amountSplit[1].length(); // number of digits after decimal
 
         if (afterDecimal > 2){
@@ -105,125 +107,86 @@ public class BankAccount {
      * @return true if all characters of prefix and domain follow email requirements, otherwise false
      */
     public static boolean isEmailValid(String email){
-        if (email.indexOf('@') == -1){ //needs an @ symbol to be valid
+        if (email.indexOf('@') == -1){
             return false;
         }
         else {
-            String lettersAndNumbers = "abcdefghijklmnopqrstuvwxyz1234567890"; //valid characters
-            String otherChars = "_.-"; //other valid characters for the prefix
-            String[] tempArray = email.split("@"); //separate prefix and domain
-            String prefix = tempArray[0];
-            String domain = tempArray[1];
-            prefix = prefix.toLowerCase(); //for easier checking
-            domain = domain.toLowerCase();
-            if (!lettersAndNumbers.substring(0, 26).contains(String.valueOf(prefix.charAt(0)))){ //first char of prefix must be a letter
+            String validChars = "abcdefghijklmnopqrstuvwxyz1234567890"; // all valid chars
+            String specialChars = "_-.";
+            String[] splitEmail = email.split("@"); // separate prefix and domain into diff arrays
+            String prefix = splitEmail[0];
+            String domain = splitEmail[1];
+            prefix = prefix.toLowerCase(); // normalizing prefix
+            domain = domain.toLowerCase(); // normalizing domain
+            // first char of prefix must be in alphabet
+            if (!validChars.substring(0, 26).contains(String.valueOf(prefix.charAt(0)))){
                 return false;
             }
+            // last char of prefix must be in validChars
+            if (!validChars.contains(String.valueOf(prefix.charAt(prefix.length()-1)))){
+                return false;
+            }
+            
             for (int i = 1; i < prefix.length(); i++){
-                String tempString = String.valueOf(prefix.charAt(i));
-                if (!lettersAndNumbers.contains(tempString) && !otherChars.contains(tempString)){ //make sure other chars in prefix valid
+                String tempChar = String.valueOf(prefix.charAt(i));
+                
+                // is rest of prefix valid
+                if (!validChars.contains(tempChar) && !specialChars.contains(tempChar)){ 
                     return false;
                 }
-                else if (tempString.equals(".") || tempString.equals("_") || tempString.equals("-")){
-                    if (!lettersAndNumbers.contains(String.valueOf(prefix.charAt(i+1)))){ //no repeating symbols
+                else if (tempChar.equals(".") || tempChar.equals("_") || tempChar.equals("-")){
+                    
+                    // no consecutive symbols
+                    if (!validChars.contains(String.valueOf(prefix.charAt(i+1)))){ 
                         return false;
                     }
                 }
             }
-            if (domain.indexOf('.') == -1){ //make sure that domain has .
+            // does domain have '.'
+            if (domain.indexOf('.') == -1){ 
                 return false;
             }
             else{
-                String[] tempDomainArray = domain.split("\\."); //split domain into initial part and . part
-                String firstPortion = tempDomainArray[0];
-                String secondPortion = tempDomainArray[1];
-                if (secondPortion.length() < 2){ //make sure the end has 2 or more characters
+                String[] domainSplit = domain.split("\\."); // split domain into before and after '.'
+                String domain1 = domainSplit[0];
+                String domain2 = domainSplit[1];
+                // make sure the end has 2 or more characters
+                if (domain2.length() < 2){ 
                     return false;
                 }
-                for (int i = 0; i < firstPortion.length(); i++){ //make sure all characters are valid in first part
-                    String tempString = String.valueOf(firstPortion.charAt(i));
-                    if (!lettersAndNumbers.contains(tempString) && !tempString.equals("-")){
+                // validation of domain's first part
+                for (int i = 0; i < domain1.length(); i++){
+                    String tempChar = String.valueOf(domain1.charAt(i));
+                    if (!validChars.contains(tempChar) && !tempChar.equals("-")){
                         return false;
+                    }
+                    else if (tempChar.equals("-")){
+                    
+                        // no consecutive symbols
+                        if (!validChars.contains(String.valueOf(domain1.charAt(i+1)))){ 
+                            return false;
+                        }
                     }
                 }
-                for (int i = 0; i < secondPortion.length(); i++){ //make sure all characters are valid in second part
-                    String tempString = String.valueOf(secondPortion.charAt(i));
-                    if (!lettersAndNumbers.contains(tempString) && !tempString.equals("-")){
+                // validation of domain's second part
+                for (int i = 0; i < domain2.length() - 1; i++){
+                    String tempChar = String.valueOf(domain2.charAt(i));
+                    if (!validChars.contains(tempChar) && !tempChar.equals("-")){
                         return false;
                     }
+                    else if (tempChar.equals("-")){
+                    
+                        // no consecutive symbols
+                        if (!validChars.contains(String.valueOf(domain2.charAt(i+1)))){ 
+                            return false;
+                        }
+                    }
+                }
+                if (!validChars.contains(String.valueOf(domain2.charAt(domain2.length()-1)))){
+                    return false;
                 }
             }
             return true;
         }
     }
 }
-
-/*
-if (email.indexOf('@') == -1){
-    return false;
-}
-
-else {
-    String validChars = "abcdefghijklmnopqrstuvwxyz1234567890"; // all valid chars
-    String specialChars = "_-.";
-
-    String[] splitEmail = email.split("@"); // separate prefix and domain into diff arrays
-    String prefix = splitEmail[0];
-    String domain = splitEmail[1];
-    prefix = prefix.toLowerCase(); // normalizing prefix
-    domain = domain.toLowerCase(); // normalizing domain
-
-    // first char of prefix must be in alphabet
-    if (!validChars.substring(0, 26).contains(String.valueOf(prefix.charAt(0)))){
-        return false;
-    }
-
-    // last char of prefix must be in validChars
-    if (!validChars.contains(String.valueOf(prefix.charAt(prefix.length()-1)))){
-        return false;
-    }
-    
-    for (int i = 1; i < prefix.length(); i++){
-        String tempChar = String.valueOf(prefix.charAt(i));
-        
-        // is rest of prefix valid
-        if (!validChars.contains(tempChar) && !specialChars.contains(tempChar)){ 
-            return false;
-        }
-        else if (tempChar.equals(".") || tempChar.equals("_") || tempChar.equals("-")){
-            
-            // no consecutive symbols
-            if (!validChars.contains(String.valueOf(prefix.charAt(i+1)))){ 
-                return false;
-            }
-        }
-    }
-    // does domain have '.'
-    if (domain.indexOf('.') == -1){ 
-        return false;
-    }
-    else{
-        String[] domainSplit = domain.split("\\."); // split domain into before and after '.'
-        String domain1 = domainSplit[0];
-        String domain2 = domainSplit[1];
-        // make sure the end has 2 or more characters
-        if (domain2.length() < 2){ 
-            return false;
-        }
-        // validation of domain's first part
-        for (int i = 0; i < domain1.length(); i++){
-            String tempChar = String.valueOf(domain1.charAt(i));
-            if (!validChars.contains(tempChar) && !tempChar.equals("-")){
-                return false;
-            }
-        }
-        // validation of domain's second part
-        for (int i = 0; i < domain2.length(); i++){
-            String tempChar = String.valueOf(domain2.charAt(i));
-            if (!validChars.contains(tempChar) && !tempChar.equals("-")){
-                return false;
-            }
-        }
-    }
-    return true;
-    */
